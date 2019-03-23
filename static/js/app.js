@@ -49,11 +49,6 @@ function buildCharts(sample) {
     var sampleValues = response.sample_values;
     var otuLabels = response.otu_labels;
 
-    // console.log(`otuIDs: ${otuIDs}`);
-    // console.log(`sampleValues: ${sampleValues}`);
-    // console.log(`otuLabels: ${otuLabels}`);
-
-
     var trace1 = {
       x: otuIDs,
       y: sampleValues,
@@ -71,7 +66,7 @@ function buildCharts(sample) {
       title: 'Belly Button Bubble Chart',
       showlegend: false,
       height: 600,    //make these dynamic?  
-      width: 600
+      width: 1200
     };
     
     Plotly.newPlot('bubble', data, layout);      
@@ -91,33 +86,14 @@ function buildCharts(sample) {
 
   d3.json(url).then(function(response) {
 
-
-    //need to figure out how to sort and filter top ten...
-    console.log(`response: ${response}`);   //returns object, not array?
-
-    response.sort(function(a, b) {return a.sample_values - b.sample_values});
-    console.log(`sort: ${response}`);
-
-    response.reverse();
-    console.log(`reverse: ${response}`);
-
-    response.slice(0,9);
-    console.log(`slice: ${response}`);
-
-
     var otuIDs = response.otu_ids;
     var sampleValues = response.sample_values;
     var otuLabels = response.otu_labels;
 
+    sampleValues.sort(function(a, b) {return a - b});
+    sampleValues.reverse();
+    sampleValues = sampleValues.slice(0,10);
 
-    // var filteredData = response.filter(sample => sample.sample_values > 100);
-    
-    // var otuIDs = filteredData.map(sample => sample.otu_ids);
-    // var sampleValues = filteredData.map(sample => sample.sample_values);
-    // var otuLabels = filteredData.map(sample => sample.otu_labels);
-
-    // var sampleValuesPie = Math.max.apply(null, sampleValues);
-    
 
     var data = [{
       values: sampleValues,
@@ -127,92 +103,15 @@ function buildCharts(sample) {
     }];
     
     var layout = {
-      height: 500,
-      width: 500
+      title: 'Belly Button Pie Chart',
+      height: 600,
+      width: 600
     };
           
   Plotly.newPlot('pie', data, layout);   
   
 
 
-    // BONUS: Build the Gauge Chart
-    //gaugeChart = d3.select(".gauge");
-
-    // buildGauge(data.WFREQ);
-//     d3.json(url).then(function(response) {
-
-//       var wfreq = response.WFREQ;
-
-  
-//       // Enter a speed between 0 and 180
-//       var wfreq = 175;
-
-//       // Trig to calc meter point
-//       var degrees = 180 - wfreq,
-//           radius = .5;
-//       var radians = degrees * Math.PI / 180;
-//       var x = radius * Math.cos(radians);
-//       var y = radius * Math.sin(radians);
-
-//       // Path: may have to change to create a better triangle
-//       var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
-//           pathX = String(x),
-//           space = ' ',
-//           pathY = String(y),
-//           pathEnd = ' Z';
-//       var path = mainPath.concat(pathX,space,pathY,pathEnd);
-
-//       var data = [{ type: 'scatter',
-//         x: [0], y:[0],
-//           marker: {size: 28, color:'850000'},
-//           showlegend: false,
-//           name: 'speed',
-//           text: wfreq,
-//           hoverinfo: 'text+name'},
-//         { values: [50/6, 50/6, 50/6, 50/6, 50/6, 50/6, 50],
-//         rotation: 90,
-//         text: ['TOO FAST!', 'Pretty Fast', 'Fast', 'Average',
-//                   'Slow', 'Super Slow', ''],
-//         textinfo: 'text',
-//         textposition:'inside',
-//         marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
-//                               'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
-//                               'rgba(210, 206, 145, .5)', 'rgba(232, 226, 202, .5)',
-//                               'rgba(255, 255, 255, 0)']},
-//         labels: ['151-180', '121-150', '91-120', '61-90', '31-60', '0-30', ''],
-//         hoverinfo: 'label',
-//         hole: .5,
-//         type: 'pie',
-//         showlegend: false
-//       }];
-
-//       var layout = {
-//         shapes:[{
-//             type: 'path',
-//             path: path,
-//             fillcolor: '850000',
-//             line: {
-//               color: '850000'
-//             }
-//           }],
-//         title: 'Gauge 
-//       Speed 0-100',
-//         height: 1000,
-//         width: 1000,
-//         xaxis: {zeroline:false, showticklabels:false,
-//                   showgrid: false, range: [-1, 1]},
-//         yaxis: {zeroline:false, showticklabels:false,
-//                   showgrid: false, range: [-1, 1]}
-// };
-
-
-      
-
-
-
-//       Plotly.newPlot('gauge', data, layout);      
-//     });
-  
 
 });
 
